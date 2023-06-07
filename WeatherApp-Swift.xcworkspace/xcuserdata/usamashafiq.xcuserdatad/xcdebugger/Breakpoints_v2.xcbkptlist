@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "4EECA7B5-18FE-43CE-854B-0DEF56870A2E"
+   type = "0"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "11E0F7C5-864F-4B7A-8753-45EF3A3939A9"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WeatherApp-Swift/Controllers/WeatherViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "132"
+            endingLineNumber = "132"
+            landmarkName = "getWeatherForecast()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "11E0F7C5-864F-4B7A-8753-45EF3A3939A9 - 271e96060d996d02"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (WeatherApp_Swift.Response&lt;WeatherApp_Swift.ForecastResult&gt;) -&gt; () in WeatherApp_Swift.WeatherViewController.getWeatherForecast() -&gt; ()"
+                  moduleName = "WeatherApp-Swift"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/usamashafiq/Downloads/WeatherApp-Swift/WeatherApp-Swift/Controllers/WeatherViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "132"
+                  endingLineNumber = "132"
+                  offsetFromSymbolStart = "100">
+               </Location>
+               <Location
+                  uuid = "11E0F7C5-864F-4B7A-8753-45EF3A3939A9 - 271e96060d996d02"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (WeatherApp_Swift.Response&lt;WeatherApp_Swift.ForecastResult&gt;) -&gt; () in WeatherApp_Swift.WeatherViewController.getWeatherForecast() -&gt; ()"
+                  moduleName = "WeatherApp-Swift"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/usamashafiq/Downloads/WeatherApp-Swift/WeatherApp-Swift/Controllers/WeatherViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "132"
+                  endingLineNumber = "132"
+                  offsetFromSymbolStart = "148">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
