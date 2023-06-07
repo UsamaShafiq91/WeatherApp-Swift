@@ -8,6 +8,7 @@
 import UIKit
 import CoreLocation
 import Kingfisher
+import SearchTextField
 
 class WeatherViewController: UIViewController {
     
@@ -19,36 +20,53 @@ class WeatherViewController: UIViewController {
     
     @IBOutlet weak var forecastCollectionView: UICollectionView!
     
+    @IBOutlet weak var backButton: UIButton!
+    @IBOutlet weak var locationSearchTextField: SearchTextField!
+    
     var city: String?
     var weatherService: WeatherService?
     var weatherResult: WeatherResult?
     var forecastResult: ForecastResult?
     var forecastdays: [Forecastday] = []
+    var searchResult: [Location] = []
 
     let locationManager = CLLocationManager()
     var currentLocation: CLLocation?
     
+    var isSearchedLocation = false
+    var searchedLocation: CLLocation?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
+        setupAdapter()
         setupLocationManager()
         setupView()
-        setupAdapter()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        locationSearchTextField.text = nil
+        searchedLocation = nil
     }
 
     func setupView() {
-        setupNavigationBar()
+        backButton.isHidden = true
+        
+        setupSearchField()
+        
+        guard isSearchedLocation else { return }
+        
+        backButton.isHidden = false
+
     }
     
-    func setupNavigationBar() {
-        navigationController?.setNavigationBarHidden(true, animated: false)
-        
-        guard let city = city else { return }
-        
-        navigationController?.setNavigationBarHidden(false, animated: false)
-        navigationController?.title = city
+    @IBAction func backButtonTapped() {
+        self.dismiss(animated: true)
     }
+    
     
     func setupAdapter() {
         weatherService = WeatherServiceAdapter()
@@ -141,6 +159,13 @@ class WeatherViewController: UIViewController {
 extension WeatherViewController: CLLocationManagerDelegate {
     
     func setupLocationManager() {
+        guard !isSearchedLocation else {
+            getWeatherDetail()
+            getWeatherForecast()
+
+            return
+        }
+        
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
@@ -226,5 +251,72 @@ extension WeatherViewController: UICollectionViewDelegate, UICollectionViewDataS
         forecastCell.setData(forecastday: forecastdays[indexPath.row])
         
         return forecastCell
+    }
+}
+
+extension WeatherViewController: UITextFieldDelegate {
+    
+    func setupSearchField() {
+        locationSearchTextField.isHidden = true
+        
+        guard !isSearchedLocation else { return }
+        
+        locationSearchTextField.isHidden = false
+        locationSearchTextField.delegate = self
+        locationSearchTextField.placeholder = .searchCity
+        locationSearchTextField.returnKeyType = .search
+        locationSearchTextField.startSuggestingImmediately = true
+        locationSearchTextField.startVisible = true
+        locationSearchTextField.theme.bgColor = UIColor.white
+        locationSearchTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+
+        locationSearchTextField.itemSelectionHandler = {item, itemPosition in
+            self.locationSearchTextField.text = item[itemPosition].title
+            self.searchedLocation = nil
+            
+            if let latitude = self.searchResult[itemPosition].lat, let longitude = self.searchResult[itemPosition].lon {
+                self.searchedLocation = CLLocation(latitude: latitude, longitude: longitude)
+            }
+        }
+    }
+    
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        getLocationSuggestions()
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        goToCustomLocation()
+        
+        return true
+    }
+    
+    func getLocationSuggestions() {
+        guard let location = locationSearchTextField.text, !location.isEmpty else { return }
+        
+        searchedLocation = nil
+        
+        weatherService?.getSearchResult(search: location, completion: { [weak self] response in
+            
+            guard let data = response.data else { return }
+            
+            self?.searchResult = data
+            
+            let suggestions: [String] = data.map({ "\($0.name ?? ""), \($0.country ?? "")" })
+
+            self?.locationSearchTextField.filterStrings(suggestions)
+        })
+    }
+    
+    func goToCustomLocation() {
+        guard let searchedLocation = searchedLocation else { return }
+        
+        let weatherVC = UIStoryboard.mainStoryboard().instantiateViewController(withIdentifier: MainStoryboard.Weather.rawValue) as? WeatherViewController ?? WeatherViewController()
+        
+        weatherVC.isSearchedLocation = true
+        weatherVC.currentLocation = searchedLocation
+        weatherVC.modalPresentationStyle = .fullScreen
+        
+        self.present(weatherVC, animated: true)
     }
 }

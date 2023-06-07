@@ -25,7 +25,8 @@ class ForecastCell: UICollectionViewCell, ReusableView, NibLoadableView {
     
     func setData(forecastday: Forecastday) {
         let detailAttributed = NSMutableAttributedString()
-        detailAttributed.append(NSAttributedString(string: "\(getValidValue(value: forecastday.day?.maxtemp_c)) / \(getValidValue(value: forecastday.day?.mintemp_c)) C\n", attributes: [.font: UIFont.mediumFont, .foregroundColor: UIColor.descriptionColor]))
+        detailAttributed.append(NSAttributedString(string: "\(getValidValue(value: Date().dateFormat(date: forecastday.date, dateformat: "yyyy-MM-dd", desiredFormat: "d MMM")))\n", attributes: [.font: UIFont.mediumFont, .foregroundColor: UIColor.descriptionColor]))
+        detailAttributed.append(NSAttributedString(string: "\(getValidValue(value: forecastday.day?.maxtemp_c)) / \(getValidValue(value: forecastday.day?.mintemp_c)) C\n", attributes: [.font: UIFont.normalFont, .foregroundColor: UIColor.descriptionColor]))
         detailAttributed.append(NSAttributedString(string: "\(getValidValue(value: forecastday.day?.condition?.text))", attributes: [.font: UIFont.normalFont, .foregroundColor: UIColor.descriptionColor]))
         
         detailLabel.attributedText = detailAttributed

@@ -22,4 +22,9 @@ struct WeatherServiceAdapter: WeatherService {
     func getWeatherForecast(latitude: Double, longitude: Double, days: Int64, completion: @escaping(Response<ForecastResult>) -> Void) {
         api.doRequest(router: Router(endpoint: .getWeatherForecast(latitude: latitude, longitude: longitude, days: days)), completion: completion)
     }
+    
+    func getSearchResult(search: String, completion: @escaping(Response<[Location]>) -> Void) {
+        api.doRequest(router: Router(endpoint: .getSearchResult(search: search)), completion: completion)
+    }
+
 }

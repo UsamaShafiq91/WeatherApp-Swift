@@ -11,4 +11,6 @@ protocol WeatherService {
     func getWeatherDetail(latitude: Double, longitude: Double, completion: @escaping(Response<WeatherResult>) -> Void)
     
     func getWeatherForecast(latitude: Double, longitude: Double, days: Int64, completion: @escaping(Response<ForecastResult>) -> Void)
+    
+    func getSearchResult(search: String, completion: @escaping(Response<[Location]>) -> Void)
 }

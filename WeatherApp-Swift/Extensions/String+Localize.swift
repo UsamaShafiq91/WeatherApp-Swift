@@ -20,4 +20,6 @@ extension String {
     static let pressure = NSLocalizedString("Pressure", comment: "")
     static let millibars = NSLocalizedString("millibars", comment: "")
     static let humidity = NSLocalizedString("Humidity", comment: "")
+    
+    static let searchCity = NSLocalizedString("Search City", comment: "")
 }

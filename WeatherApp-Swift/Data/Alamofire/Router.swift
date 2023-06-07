@@ -11,6 +11,7 @@ import Alamofire
 enum EndPoint {
     case getWeatherDetail(latitude: Double, longitude: Double)
     case getWeatherForecast(latitude: Double, longitude: Double, days: Int64)
+    case getSearchResult(search: String)
 }
 
 struct Router: BaseRouter {
@@ -21,6 +22,7 @@ struct Router: BaseRouter {
         switch endpoint {
         case .getWeatherDetail(_, _): return Constants.weatherBaseUrl
         case .getWeatherForecast(_, _, _): return Constants.weatherBaseUrl
+        case .getSearchResult(_): return Constants.weatherBaseUrl
         }
     }
     
@@ -40,6 +42,7 @@ struct Router: BaseRouter {
         switch endpoint {
         case .getWeatherDetail(_, _): return "/current.json"
         case .getWeatherForecast(_, _, _): return "/forecast.json"
+        case .getSearchResult(_): return "/search.json"
         }
     }
     
@@ -59,6 +62,13 @@ struct Router: BaseRouter {
                 "q": "\(latitude),\(longitude)",
                 "aqi": "no",
                 "days": days,
+                "key": Constants.weatherApiKey,
+            ] as [String: AnyObject]
+            
+        case .getSearchResult(let search):
+            
+            return [
+                "q": search,
                 "key": Constants.weatherApiKey,
             ] as [String: AnyObject]
         

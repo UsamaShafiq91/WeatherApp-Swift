@@ -23,6 +23,8 @@ struct Location: Codable {
     var tz_id: String?
     var localtime_epoch: Int64?
     var localtime: String?
+    var id: Int64?
+    var url: String?
 }
 
 struct Current: Codable {
