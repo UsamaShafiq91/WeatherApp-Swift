@@ -17,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="weather_placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="KSA-NF-Bio">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KSA-NF-Bio">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </imageView>
@@ -52,14 +52,14 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="tCm-sL-QyB">
+                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="tCm-sL-QyB">
                                         <rect key="frame" x="16" y="568" width="361" height="175"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="175" id="0iu-7O-XFm"/>
                                         </constraints>
                                         <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="sWT-aM-y5N">
-                                            <size key="itemSize" width="128" height="128"/>
+                                            <size key="itemSize" width="175" height="175"/>
                                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -119,7 +119,7 @@
                     <navigationItem key="navigationItem" id="vGP-bn-wUR"/>
                     <connections>
                         <outlet property="backButton" destination="d89-nI-SPT" id="yx7-zo-NXe"/>
-                        <outlet property="cityImageView" destination="KSA-NF-Bio" id="eEa-Kf-0OM"/>
+                        <outlet property="backgroundImageView" destination="KSA-NF-Bio" id="eEa-Kf-0OM"/>
                         <outlet property="cityNameLabel" destination="pzu-SO-PYt" id="NBk-mS-VUC"/>
                         <outlet property="forecastCollectionView" destination="tCm-sL-QyB" id="J6Z-9b-Lcd"/>
                         <outlet property="locationSearchTextField" destination="8GC-0Z-lFL" id="J05-Bk-xAo"/>
@@ -134,7 +134,6 @@
     </scenes>
     <resources>
         <image name="arrow.backward" catalog="system" width="128" height="95"/>
-        <image name="weather_placeholder" width="1024" height="682"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

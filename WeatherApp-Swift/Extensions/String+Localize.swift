@@ -13,7 +13,10 @@ extension String {
     
     static let settings = NSLocalizedString("Settings", comment: "")
     static let cancel = NSLocalizedString("Cancel", comment: "")
-    
+    static let ok = NSLocalizedString("Ok", comment: "")
+
+    static let error = NSLocalizedString("Error", comment: "")
+
     static let feelsLike = NSLocalizedString("Feels like", comment: "")
     static let windSpeed = NSLocalizedString("Wind Speed", comment: "")
     static let kph = NSLocalizedString("kph", comment: "")

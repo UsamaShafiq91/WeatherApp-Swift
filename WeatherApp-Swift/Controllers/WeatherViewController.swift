@@ -9,10 +9,11 @@ import UIKit
 import CoreLocation
 import Kingfisher
 import SearchTextField
+import NVActivityIndicatorView
 
 class WeatherViewController: UIViewController {
     
-    @IBOutlet weak var cityImageView: UIImageView!
+    @IBOutlet weak var backgroundImageView: UIImageView!
     
     @IBOutlet weak var cityNameLabel: UILabel!
     @IBOutlet weak var weatherIconImageView: UIImageView!
@@ -35,6 +36,8 @@ class WeatherViewController: UIViewController {
     
     var isSearchedLocation = false
     var searchedLocation: CLLocation?
+    
+    var loader: NVActivityIndicatorView?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,6 +56,7 @@ class WeatherViewController: UIViewController {
     }
 
     func setupView() {
+        setupLoader()
         backButton.isHidden = true
         
         setupSearchField()
@@ -60,13 +64,20 @@ class WeatherViewController: UIViewController {
         guard isSearchedLocation else { return }
         
         backButton.isHidden = false
-
+    }
+    
+    func setupLoader() {
+        loader = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 75, height: 75))
+        loader?.center = self.view.center
+        
+        if let loader = loader {
+            self.view.addSubview(loader)
+        }
     }
     
     @IBAction func backButtonTapped() {
         self.dismiss(animated: true)
     }
-    
     
     func setupAdapter() {
         weatherService = WeatherServiceAdapter()
@@ -80,9 +91,17 @@ class WeatherViewController: UIViewController {
         
         guard let latitude = currentLocation?.coordinate.latitude, let longitude = currentLocation?.coordinate.longitude else { return }
         
+        loader?.startAnimating()
+        
         weatherService?.getWeatherDetail(latitude: latitude, longitude: longitude, completion: { [weak self] response in
             
-            guard let data = response.data else { return }
+            self?.loader?.stopAnimating()
+            
+            guard let data = response.data else {
+                self?.showErrorAlert(errorMessage: response.error.debugDescription)
+                
+                return
+            }
             
             self?.weatherResult = data
             
@@ -91,6 +110,13 @@ class WeatherViewController: UIViewController {
     }
     
     func setupWeatherData() {
+        if weatherResult?.current?.is_day == 1 {
+            backgroundImageView.image = UIImage(named: "day")
+        }
+        else {
+            backgroundImageView.image = UIImage(named: "night")
+        }
+        
         cityNameLabel.text = weatherResult?.location?.name
         cityNameLabel.font = .titleFont
         cityNameLabel.textColor = .titleColor
@@ -184,14 +210,35 @@ extension WeatherViewController: CLLocationManagerDelegate {
         }
     }
     
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        switch manager.authorizationStatus {
+        case .notDetermined:
+            manager.requestWhenInUseAuthorization()
+            break
+        case .authorizedWhenInUse:
+            manager.startUpdatingLocation()
+            break
+        case .authorizedAlways:
+            manager.startUpdatingLocation()
+            break
+        case .denied:
+            showLocationAlert()
+            break
+        case .restricted:
+            showLocationAlert()
+            break
+        default:
+            break
+        }
+    }
+    
     func showLocationAlert() {
         let alertController = UIAlertController(title: .locationPermissionRequired, message: .locationPermissionMessage, preferredStyle: .alert)
         
-        let okAction = UIAlertAction(title: .settings, style: .default, handler: {(cAlertAction) in
-            //Redirect to Settings app
+        let settingsAction = UIAlertAction(title: .settings, style: .default, handler: {(cAlertAction) in
             UIApplication.shared.open(URL(string:UIApplication.openSettingsURLString)!)
         })
-        alertController.addAction(okAction)
+        alertController.addAction(settingsAction)
         
         let cancelAction = UIAlertAction(title: .cancel, style: .default, handler: {(cAlertAction) in
         })
@@ -212,6 +259,16 @@ extension WeatherViewController: CLLocationManagerDelegate {
        
         return isAllowed
     }
+    
+    func showErrorAlert(errorMessage: String) {
+        let alertController = UIAlertController(title: .error, message: errorMessage, preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: .ok, style: .default, handler: {(cAlertAction) in
+        })
+        alertController.addAction(okAction)
+                
+        self.present(alertController, animated: true)
+    }
 }
 
 extension WeatherViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -228,14 +285,7 @@ extension WeatherViewController: UICollectionViewDelegate, UICollectionViewDataS
         if let forecastday = forecastResult?.forecast?.forecastday {
             self.forecastdays = forecastday
         }
-        
-        if forecastResult?.current?.is_day == 1 {
-            forecastCollectionView.backgroundColor = .dayColor.withAlphaComponent(0.7)
-        }
-        else {
-            forecastCollectionView.backgroundColor = .nightColor.withAlphaComponent(0.7)
-        }
-        
+                
         forecastCollectionView.reloadData()
     }
     
@@ -265,9 +315,12 @@ extension WeatherViewController: UITextFieldDelegate {
         locationSearchTextField.delegate = self
         locationSearchTextField.placeholder = .searchCity
         locationSearchTextField.returnKeyType = .search
+        locationSearchTextField.autocorrectionType = .no
+        
         locationSearchTextField.startSuggestingImmediately = true
         locationSearchTextField.startVisible = true
         locationSearchTextField.theme.bgColor = UIColor.white
+        
         locationSearchTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
 
         locationSearchTextField.itemSelectionHandler = {item, itemPosition in

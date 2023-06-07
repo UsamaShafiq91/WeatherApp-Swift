@@ -1,24 +1,30 @@
 PODS:
   - Alamofire (5.6.2)
   - Kingfisher (7.6.1)
+  - NVActivityIndicatorView (5.1.1):
+    - NVActivityIndicatorView/Base (= 5.1.1)
+  - NVActivityIndicatorView/Base (5.1.1)
   - SearchTextField (1.2.4)
 
 DEPENDENCIES:
   - Alamofire
   - Kingfisher
+  - NVActivityIndicatorView (~> 5.1)
   - SearchTextField (~> 1.2)
 
 SPEC REPOS:
   trunk:
     - Alamofire
     - Kingfisher
+    - NVActivityIndicatorView
     - SearchTextField
 
 SPEC CHECKSUMS:
   Alamofire: d368e1ff8a298e6dde360e35a3e68e6c610e7204
   Kingfisher: 93a3c6d0d551658a31e19f21747e1d15cb39d525
+  NVActivityIndicatorView: 1f6c5687f1171810aa27a3296814dc2d7dec3667
   SearchTextField: 40dc3cc57def5a211f263cac263622c163bbc25a
 
-PODFILE CHECKSUM: c78b778d0a4c3ed09cd93b49af664ee68b983684
+PODFILE CHECKSUM: fb444f6da154752ecc7be3db771b223a8ad23d28
 
 COCOAPODS: 1.11.2

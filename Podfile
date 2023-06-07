@@ -9,6 +9,7 @@ target 'WeatherApp-Swift' do
   pod 'Alamofire'
   pod 'Kingfisher'
   pod 'SearchTextField', '~> 1.2'
+  pod 'NVActivityIndicatorView', '~> 5.1'
 
   target 'WeatherApp-SwiftTests' do
     inherit! :search_paths
